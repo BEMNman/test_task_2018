@@ -7,10 +7,11 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
-  <head>
+<head>
     <title>(((Test)))</title>
-  </head>
-  <body>
-  TEST!!!!!!!!!!!
-  </body>
+</head>
+<body>
+TESTtestTEST
+<%--Go back to <a href="<c:url value='/list' />">List of All Users</a>--%>
+</body>
 </html>
