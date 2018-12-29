@@ -1,11 +1,13 @@
 package com.testtask.dao;
 
 import com.testtask.entity.Product;
-import org.hibernate.Query;
+//import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
+import javax.persistence.Query;
 import java.util.List;
 
 @Repository
@@ -19,7 +21,7 @@ public class ProductDAOImp implements ProductDAO {
         Session session = this.sessionFactory.getCurrentSession();
         Query query = session.createSQLQuery("select p from product p where p.product like " + nameProduct).addEntity(Product.class);
         List<Product> productWithName = null;
-        productWithName.addAll(query.list());
+        productWithName.addAll(query.getResultList());
         return productWithName.size() == 1 ? productWithName.get(0) : null;
     }
 
@@ -51,7 +53,7 @@ public class ProductDAOImp implements ProductDAO {
         List<Product> products = null;
         Session session = this.sessionFactory.getCurrentSession();
         Query query = session.createSQLQuery("from product").addEntity(Product.class);
-        products.addAll(query.list());
+        products.addAll(query.getResultList());
         return products;
     }
 
@@ -60,7 +62,7 @@ public class ProductDAOImp implements ProductDAO {
         List<Product> productsIsNeeded = null;
         Session session = this.sessionFactory.getCurrentSession();
         Query query = session.createSQLQuery("select p from product p where p.amount like 1").addEntity(Product.class);
-        productsIsNeeded.addAll(query.list());
+        productsIsNeeded.addAll(query.getResultList());
         return productsIsNeeded;
     }
 
@@ -70,7 +72,7 @@ public class ProductDAOImp implements ProductDAO {
         Session session = this.sessionFactory.getCurrentSession();
 //        Query query = session.createQuery("select p from product p where p.amount like '0'");
         Query query = session.createSQLQuery("select p from product p where p.amount like 0").addEntity(Product.class);
-        productsNotNeeded.addAll(query.list());
+        productsNotNeeded.addAll(query.getResultList());
         return productsNotNeeded;
     }
 

@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: Gogolinsky
@@ -11,7 +12,10 @@
     <title>(((Test)))</title>
 </head>
 <body>
-TESTtestTEST
-<%--Go back to <a href="<c:url value='/list' />">List of All Users</a>--%>
+<div>TESTtestTEST</div>
+<div>test <a href="<c:url value='/test' />">TEST</a></div>
+<div>test1 <a href="<c:url value='/test1' />">TEST1</a></div>
+<div>test1 <a href="/test1">TEST2</a></div>
+<div><input type="text"/></div>
 </body>
 </html>
