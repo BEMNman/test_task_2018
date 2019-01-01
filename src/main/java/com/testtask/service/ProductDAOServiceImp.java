@@ -4,6 +4,7 @@ import com.testtask.dao.ProductDAO;
 import com.testtask.entity.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
@@ -31,8 +32,8 @@ public class ProductDAOServiceImp implements ProductDAOService {
     }
 
     @Override
-    public void deleteProductByName(String nameProduct) {
-        productDAO.deleteProductByName(nameProduct);
+    public void deleteProduct(Product product) {
+        productDAO.deleteProduct(product);
     }
 
     @Override
@@ -59,5 +60,10 @@ public class ProductDAOServiceImp implements ProductDAOService {
     @Override
     public void print() {
         System.out.println("ProductDAOServiceImp");
+    }
+
+    @Override
+    public ModelAndView listProducts(){
+        return productDAO.listProducts();
     }
 }

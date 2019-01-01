@@ -1,12 +1,12 @@
 package com.testtask.dao;
 
 import com.testtask.entity.Product;
-import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.persistence.Query;
 import java.util.ArrayList;
@@ -22,32 +22,12 @@ public class ProductDAOImp implements ProductDAO {
     @Transactional
     public Product findByName(final String name) {
         Session session = this.sessionFactory.getCurrentSession();
-        System.out.println("start find");
-//        Query query = session.createQuery("from Product where nameProduct like 'Монитор'");
-//        System.out.println("after query");
-////        query.setParameter("nameProduct", nameProduct);
-//        List<Product> productWithName = null;
-//        productWithName.addAll(query.getResultList());
-//        System.out.println("end");
-//        //
-//        for(Product p : productWithName){
-//            System.out.println("in loop");
-//            System.out.println(p.getNameProduct());
-//        }
-//        Criteria criteria = session.
-        Query query = session.createQuery("from Product p where p.nameProduct like 'Монитор'");
-        System.out.println("after query");
-//        query.setParameter("name", nameProduct);
+        Query query = session.createQuery("from Product p where p.nameProduct like '" + name + "'");
         List<Product> productWithName = new ArrayList<Product>();
         productWithName.addAll(((org.hibernate.query.Query) query).list());
-//        productWithName.addAll(query.getResultList());
-        System.out.println("end");
-        //
-        for(Product p : productWithName){
-            System.out.println("in loop");
+        for (Product p : productWithName) {
             System.out.println(p);
         }
-        //
         return productWithName.size() == 1 ? productWithName.get(0) : null;
     }
 
@@ -55,16 +35,23 @@ public class ProductDAOImp implements ProductDAO {
     @Transactional
     public void addProduct(Product product) {
         Session session = this.sessionFactory.getCurrentSession();
-        session.persist(product);
-
+        if (findByName(product.getNameProduct()) == null) {
+            session.persist(product);
+        } else {
+            System.out.println("Retry add new product");
+        }
     }
 
     @Override
     @Transactional
-    public void deleteProductByName(String nameProduct) {
+    public void deleteProduct(Product product) {
         Session session = this.sessionFactory.getCurrentSession();
-        session.delete(findByName(nameProduct));
-//        session.delete(1);
+        Product productDelete = findByName(product.getNameProduct());
+        if (productDelete != null) {
+            session.delete(productDelete);
+        } else {
+            System.out.println("Retry delete new product");
+        }
     }
 
     @Override
@@ -81,11 +68,20 @@ public class ProductDAOImp implements ProductDAO {
     @Override
     @Transactional
     public List<Product> findAllProducts() {
-        List<Product> products = null;
+        List<Product> products = new ArrayList<>();
         Session session = this.sessionFactory.getCurrentSession();
-        Query query = session.createSQLQuery("select p.* from product p").addEntity(Product.class);
-        products.addAll(query.getResultList());
+        Query query = session.createQuery("from Product");
+        products.addAll(((org.hibernate.query.Query) query).list());
         return products;
+    }
+
+    @Override
+    @Transactional
+    public ModelAndView listProducts() {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("product", findAllProducts());
+        modelAndView.setViewName("list");
+        return modelAndView;
     }
 
     @Override

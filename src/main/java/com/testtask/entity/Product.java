@@ -1,6 +1,7 @@
 package com.testtask.entity;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "product")
@@ -8,9 +9,7 @@ public class Product {
 
     @Id
     @Column(name = "idProduct")
-//    @GeneratedValue(strategy = GenerationType.TABLE, generator = "idProduct")
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "idProduct")
-
     private Integer id;
 
     @Column(name = "product")
@@ -66,8 +65,24 @@ public class Product {
     @Override
     public String toString() {
         return "id: " + getId() + " "
-                +"product: " + getNameProduct() + " "
+                + "product: " + getNameProduct() + " "
                 + "isNeeded: " + getIsNeeded() + " "
                 + "amount: " + getAmount();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Product product = (Product) o;
+        return getIsNeeded() == product.getIsNeeded() &&
+                getAmount() == product.getAmount() &&
+//                Objects.equals(getId(), product.getId()) &&
+                Objects.equals(getNameProduct(), product.getNameProduct());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(/*getId(),*/ getNameProduct(), getIsNeeded(), getAmount());
     }
 }

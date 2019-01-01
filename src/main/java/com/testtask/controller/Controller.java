@@ -5,6 +5,7 @@ import com.testtask.service.ProductDAOService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 
 @org.springframework.stereotype.Controller
 public class Controller {
@@ -21,7 +22,7 @@ public class Controller {
         return "/start";
     }
 
-    @RequestMapping(value = "/productList", method= RequestMethod.GET)
+    @RequestMapping(value = "/productList", method = RequestMethod.GET)
     public String productList() {
 //        productDAOService.findAllProducts();
         productDAOService.print();
@@ -29,22 +30,27 @@ public class Controller {
         return "/productList";
     }
 
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    public ModelAndView listProducts() {
+        return productDAOService.listProducts();
+    }
+
     @RequestMapping(value = "/test1")
     public String test1() {
         return "/test1";
     }
 
-    @RequestMapping(value = "/addProduct", method= RequestMethod.GET)
+    @RequestMapping(value = "/addProduct", method = RequestMethod.GET)
     public String addProduct() {
-//        productDAOService.findAllProducts();
-//        productDAOService.print();
-        productDAOService.addProduct(new Product("TESTNext", (byte) 0, 10));
+        Product productAdd = new Product("TESTNext", (byte) 0, 10);
+        productDAOService.addProduct(productAdd);
         return "/addProduct";
     }
 
     @RequestMapping(value = "/deleteProduct")
-    public String deleteProduc(String nameProduct) {
-        productDAOService.deleteProductByName("Монитор");
+    public String deleteProduct(Product productDelete) {
+        productDelete = new Product("Монитор", (byte) 1, 33); ///for test
+        productDAOService.deleteProduct(productDelete);
         return "/deleteProduct";
     }
 }
