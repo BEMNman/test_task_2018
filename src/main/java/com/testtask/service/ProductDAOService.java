@@ -12,4 +12,6 @@ public interface ProductDAOService {
     List<Product> findAllProducts();
     List<Product> findAllProductsIsNeededTrue();
     List<Product> findAllProductsIsNeededFalse();
+
+    void print();
 }

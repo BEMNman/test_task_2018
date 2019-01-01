@@ -13,9 +13,10 @@
 </head>
 <body>
 <div>TESTtestTEST</div>
-<div>test <a href="<c:url value='/test' />">TEST</a></div>
+<div>test <a href="<c:url value='/productList' />">productList</a></div>
+<div>test <a href="<c:url value='/addProduct' />">AddProduct</a></div>
+<div>test <a href="<c:url value='/deleteProduct' />">DeleteProduct</a></div>
 <div>test1 <a href="<c:url value='/test1' />">TEST1</a></div>
-<div>test1 <a href="/test1">TEST2</a></div>
 <div><input type="text"/></div>
 </body>
 </html>

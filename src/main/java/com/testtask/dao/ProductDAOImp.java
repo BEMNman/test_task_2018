@@ -1,13 +1,15 @@
 package com.testtask.dao;
 
 import com.testtask.entity.Product;
-//import org.hibernate.Query;
+import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.Query;
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -17,15 +19,40 @@ public class ProductDAOImp implements ProductDAO {
     private SessionFactory sessionFactory;
 
     @Override
-    public Product findByName(final String nameProduct) {
+    @Transactional
+    public Product findByName(final String name) {
         Session session = this.sessionFactory.getCurrentSession();
-        Query query = session.createSQLQuery("select p from product p where p.product like " + nameProduct).addEntity(Product.class);
-        List<Product> productWithName = null;
-        productWithName.addAll(query.getResultList());
+        System.out.println("start find");
+//        Query query = session.createQuery("from Product where nameProduct like 'Монитор'");
+//        System.out.println("after query");
+////        query.setParameter("nameProduct", nameProduct);
+//        List<Product> productWithName = null;
+//        productWithName.addAll(query.getResultList());
+//        System.out.println("end");
+//        //
+//        for(Product p : productWithName){
+//            System.out.println("in loop");
+//            System.out.println(p.getNameProduct());
+//        }
+//        Criteria criteria = session.
+        Query query = session.createQuery("from Product p where p.nameProduct like 'Монитор'");
+        System.out.println("after query");
+//        query.setParameter("name", nameProduct);
+        List<Product> productWithName = new ArrayList<Product>();
+        productWithName.addAll(((org.hibernate.query.Query) query).list());
+//        productWithName.addAll(query.getResultList());
+        System.out.println("end");
+        //
+        for(Product p : productWithName){
+            System.out.println("in loop");
+            System.out.println(p);
+        }
+        //
         return productWithName.size() == 1 ? productWithName.get(0) : null;
     }
 
     @Override
+    @Transactional
     public void addProduct(Product product) {
         Session session = this.sessionFactory.getCurrentSession();
         session.persist(product);
@@ -33,12 +60,15 @@ public class ProductDAOImp implements ProductDAO {
     }
 
     @Override
+    @Transactional
     public void deleteProductByName(String nameProduct) {
         Session session = this.sessionFactory.getCurrentSession();
-        session.delete(findByName(nameProduct).getId());
+        session.delete(findByName(nameProduct));
+//        session.delete(1);
     }
 
     @Override
+    @Transactional
     public void update(Product product) {
         Session session = sessionFactory.getCurrentSession();
         Product productExist = session.get(Product.class, product.getId());
@@ -49,15 +79,17 @@ public class ProductDAOImp implements ProductDAO {
     }
 
     @Override
+    @Transactional
     public List<Product> findAllProducts() {
         List<Product> products = null;
         Session session = this.sessionFactory.getCurrentSession();
-        Query query = session.createSQLQuery("from product").addEntity(Product.class);
+        Query query = session.createSQLQuery("select p.* from product p").addEntity(Product.class);
         products.addAll(query.getResultList());
         return products;
     }
 
     @Override
+    @Transactional
     public List<Product> findAllProductsIsNeededTrue() {
         List<Product> productsIsNeeded = null;
         Session session = this.sessionFactory.getCurrentSession();
@@ -67,6 +99,7 @@ public class ProductDAOImp implements ProductDAO {
     }
 
     @Override
+    @Transactional
     public List<Product> findAllProductsIsNeededFalse() {
         List<Product> productsNotNeeded = null;
         Session session = this.sessionFactory.getCurrentSession();

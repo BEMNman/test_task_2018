@@ -2,7 +2,7 @@ DROP TABLE IF EXISTS `test`.`product`;
 CREATE TABLE `test`.`product`
 (
   `idProduct` INT         NOT NULL AUTO_INCREMENT,
-  `product`   VARCHAR(45) NOT NULL DEFAULT 'new_product',
+  `product`   VARCHAR(45) UNIQUE DEFAULT 'new_product',
   `isNeeded`  BIT         NOT NULL DEFAULT 0,
   `amount`    VARCHAR(45) NOT NULL DEFAULT 0,
   PRIMARY KEY (`idProduct`)

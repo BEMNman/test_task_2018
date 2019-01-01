@@ -7,11 +7,13 @@ import javax.persistence.*;
 public class Product {
 
     @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "productid")
-    private int id;
+    @Column(name = "idProduct")
+//    @GeneratedValue(strategy = GenerationType.TABLE, generator = "idProduct")
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "idProduct")
 
-    @Column(name = "nameProduct")
+    private Integer id;
+
+    @Column(name = "product")
     private String nameProduct;
 
     @Column(name = "isNeeded")
@@ -29,7 +31,7 @@ public class Product {
         this.amount = amount;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -59,5 +61,13 @@ public class Product {
 
     public void setAmount(int amount) {
         this.amount = amount;
+    }
+
+    @Override
+    public String toString() {
+        return "id: " + getId() + " "
+                +"product: " + getNameProduct() + " "
+                + "isNeeded: " + getIsNeeded() + " "
+                + "amount: " + getAmount();
     }
 }

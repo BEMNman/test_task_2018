@@ -1,3 +1,7 @@
+
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
 <html>
 <head>
     <meta http-equiv='Content-Type' content='text/html; charset=UTF-8'/>
@@ -28,8 +32,10 @@
 <body>
 <div class="w3-container mainTable">
     <br/>
-    <a href="<c:url value="/"/>">Главная</a> | <a href="<c:url value="/create"/>">Добавить книгу</a> | <a
-        href="<c:url value="/update/${book.id}"/>">Обновить книгу</a>
+    <div>test <a href="<c:url value='/productList' />">productList</a></div>
+
+    <a href="<c:url value="/start"/>">Главная</a> | <a href="<c:url value="/addProduct"/>">Добавить Product</a> | <a
+        href="<c:url value="/test1/${product.id}"/>">Обновить книгу</a> | <a href="<c:url value="/deleteProduct"/>">Удалить Product</a>
     <br/>
     <br/>
     <h2>Информация о книге</h2>
@@ -37,32 +43,32 @@
         <tr class="w3-grey">
             <th class="w3-center">id</th>
             <th class="w3-center">Название</th>
-            <th class="w3-center">Описание</th>
-            <th class="w3-center">Автор</th>
-            <th class="w3-center">ISBN</th>
-            <th class="w3-center">Год</th>
-            <th class="w3-center">Читал</th>
+            <%--<th class="w3-center">Описание</th>--%>
+            <%--<th class="w3-center">Автор</th>--%>
+            <%--<th class="w3-center">ISBN</th>--%>
+            <%--<th class="w3-center">Год</th>--%>
+            <%--<th class="w3-center">Читал</th>--%>
         </tr>
         <tr>
-            <td class="myclass">${book.id}</td>
-            <td class="myclass" width="200">${book.title}</td>
-            <td class="myclass">${book.description}</td>
-            <td class="myclass" width="110">${book.author}</td>
-            <td class="myclass" width="142">${book.isbn}</td>
-            <td class="myclass">${book.printYear}</td>
-            <c:if test="${book.readAlready == false}">
-                <td class="myclass2">Нет</td>
-            </c:if>
-            <c:if test="${book.readAlready == true}">
-                <td class="myclass2">Да</td>
-            </c:if>
+            <td class="myclass">${product.id}</td>
+            <td class="myclass" width="200">${product.nameProduct}</td>
+            <%--<td class="myclass">${book.description}</td>--%>
+            <%--<td class="myclass" width="110">${book.author}</td>--%>
+            <%--<td class="myclass" width="142">${book.isbn}</td>--%>
+            <%--<td class="myclass">${book.printYear}</td>--%>
+            <%--<c:if product="${book.readAlready == false}">--%>
+                <%--<td class="myclass2">Нет</td>--%>
+            <%--</c:if>--%>
+            <%--<c:if test="${book.readAlready == true}">--%>
+                <%--<td class="myclass2">Да</td>--%>
+            <%--</c:if>--%>
         </tr>
     </table>
 </div>
 <c:if test="${book.readAlready == false}">
     <div class="w3-container">
         <br/>
-        <c:url var="addAction" value="/add"/>
+        <c:url var="addAction" value="/test1"/>
         <form:form action="${addAction}" modelAttribute="book">
             <form:hidden path="id"/>
             <form:hidden path="author"/>
