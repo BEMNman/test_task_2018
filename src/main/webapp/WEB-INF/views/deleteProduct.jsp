@@ -16,6 +16,6 @@
 <div>
     DeleteProduct
 </div>
-<div><a href="<c:url value="/start"/>">Главная</a></div>
+<div><a href="<c:url value="/listProducts"/>">Главная</a></div>
 </body>
 </html>

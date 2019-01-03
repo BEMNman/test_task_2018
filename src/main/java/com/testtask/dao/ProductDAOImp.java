@@ -20,15 +20,15 @@ public class ProductDAOImp implements ProductDAO {
 
     @Override
     @Transactional
-    public Product findByName(final String name) {
+    public ModelAndView findByName(final String name) {
         Session session = this.sessionFactory.getCurrentSession();
-        Query query = session.createQuery("from Product p where p.nameProduct like '" + name + "'");
+        Query query = session.createQuery("from Product p where p.nameProduct like '%" + name.trim() + "%'");
         List<Product> productWithName = new ArrayList<Product>();
         productWithName.addAll(((org.hibernate.query.Query) query).list());
-        for (Product p : productWithName) {
-            System.out.println(p);
-        }
-        return productWithName.size() == 1 ? productWithName.get(0) : null;
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("product", productWithName);
+        modelAndView.setViewName("listProducts");
+        return modelAndView;
     }
 
     @Override
@@ -45,13 +45,13 @@ public class ProductDAOImp implements ProductDAO {
     @Override
     @Transactional
     public void deleteProduct(Product product) {
-        Session session = this.sessionFactory.getCurrentSession();
-        Product productDelete = findByName(product.getNameProduct());
-        if (productDelete != null) {
-            session.delete(productDelete);
-        } else {
-            System.out.println("Retry delete new product");
-        }
+//        Session session = this.sessionFactory.getCurrentSession();
+////        Product productDelete = findByName(product.getNameProduct());
+//        if (productDelete != null) {
+//            session.delete(productDelete);
+//        } else {
+//            System.out.println("Retry delete new product");
+//        }
     }
 
     @Override
@@ -80,7 +80,7 @@ public class ProductDAOImp implements ProductDAO {
     public ModelAndView listProducts() {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("product", findAllProducts());
-        modelAndView.setViewName("list");
+        modelAndView.setViewName("listProducts");
         return modelAndView;
     }
 

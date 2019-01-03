@@ -22,7 +22,7 @@ public class ProductDAOServiceImp implements ProductDAOService {
     }
 
     @Override
-    public Product findByName(String nameProduct) {
+    public ModelAndView findByName(String nameProduct) {
         return productDAO.findByName(nameProduct);
     }
 

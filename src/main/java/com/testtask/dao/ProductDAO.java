@@ -6,7 +6,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.List;
 
 public interface ProductDAO {
-    Product findByName(String nameProduct);
+    ModelAndView findByName(String nameProduct);
     void addProduct(Product product);
     void deleteProduct(Product product);
     void update(Product product);

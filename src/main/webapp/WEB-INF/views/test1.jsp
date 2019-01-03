@@ -13,7 +13,7 @@
 </head>
 <body>
 test1
-<div>test <a href="<c:url value='/start' />">startList</a></div>
+<div>test <a href="<c:url value='/listProducts' />">listProducts</a></div>
 
 </body>
 </html>
