@@ -8,7 +8,7 @@ import java.util.List;
 public interface ProductDAO {
     ModelAndView findByName(String nameProduct);
     void addProduct(Product product);
-    void deleteProduct(Product product);
+    void deleteProduct(Integer productID);
     void update(Product product);
     List<Product> findAllProducts();
     List<Product> findAllProductsIsNeededTrue();

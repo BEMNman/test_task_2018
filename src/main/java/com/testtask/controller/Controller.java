@@ -35,9 +35,9 @@ public class Controller {
     }
 
     @RequestMapping(value = "/deleteProduct")
-    public ModelAndView deleteProduct(Product productDelete) {
-        productDelete = new Product("Монитор", (byte) 1, 33); ///for test
-        productDAOService.deleteProduct(productDelete);
+    public ModelAndView deleteProduct(@RequestParam("deleteProduct") Integer deleteProductById) {
+        productDAOService.deleteProduct(deleteProductById);
+        System.out.println("deleteProductById = " + deleteProductById);
         return listProducts();
     }
 
@@ -45,7 +45,7 @@ public class Controller {
     @RequestMapping(value = "/updateProduct")
     public String updateProduct(Product productUpdate) {
         productUpdate = new Product("Монитор", (byte) 1, 33); ///for test
-        productDAOService.deleteProduct(productUpdate);
+//        productDAOService.deleteProduct(productUpdate);
         return "/updateProduct";
     }
 

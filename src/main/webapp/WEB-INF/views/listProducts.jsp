@@ -2,9 +2,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt_rt" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%--<%!--%>
-<%--int i = 1;--%>
-<%--%>--%>
 <html>
 <head>
     <meta charset="utf-8">
@@ -36,7 +33,6 @@
 
 <table class="w3-centered" bgcolor="#808080" style="border: 2px solid; width: 600px; text-align:center;">
     <tr>
-        <%--<th class="w3-centered" , bgcolor="white">№</th>--%>
         <th class="w3-centered" bgcolor="white">Наименование</th>
         <th class="w3-centered" bgcolor="white">Необходимость</th>
         <th class="w3-centered" bgcolor="white">Количество</th>
@@ -45,7 +41,6 @@
     <tbody class="w3-centered" bgcolor="white">
     <c:forEach items="${product}" var="product">
         <tr>
-                <%--<td><%= i %>--%>
             <td height="30px" align="left"><c:out value="${product.nameProduct}"/></td>
             <c:if test="${product.isNeeded == 1}">
                 <td><c:out value="да"/></td>
@@ -56,20 +51,14 @@
             <td><c:out value="${product.amount}"/></td>
             <td>
                 <a href="<c:url value='/updateProduct' />">Редактировать</a>
-                <a href="<c:url value='/deleteProduct' />">Удалить</a>
+
+                <form action="<c:url value='/deleteProduct' />">
+                    <input type="text" name="deleteProduct" value="${product.id}" hidden/>
+                    <button>Удалить</button>
+                </form>
             </td>
-                <%--<%--%>
-                <%--i++;--%>
-                <%--%>--%>
-
-                <%--<td style="text-align: center"><a th:href="@{'/edit/{id}'(id=${product.id})}"><i class="fa fa-edit" style="font-size:20px"></i></a></td>--%>
-                <%--<td style="text-align: center"><a th:href="@{'/deleteProduct/{id}'(id=${product.id})}"><i class="fa fa-trash" style="font-size:20px"></i></a></td>--%>
-
         </tr>
     </c:forEach>
-    <%--<%--%>
-    <%--i = 1;--%>
-    <%--%>--%>
     </tbody>
 </table>
 

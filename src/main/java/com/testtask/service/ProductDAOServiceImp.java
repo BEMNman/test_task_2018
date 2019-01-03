@@ -32,8 +32,8 @@ public class ProductDAOServiceImp implements ProductDAOService {
     }
 
     @Override
-    public void deleteProduct(Product product) {
-        productDAO.deleteProduct(product);
+    public void deleteProduct(Integer productID) {
+        productDAO.deleteProduct(productID);
     }
 
     @Override

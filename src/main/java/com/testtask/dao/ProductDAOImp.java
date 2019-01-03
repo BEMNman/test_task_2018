@@ -44,14 +44,12 @@ public class ProductDAOImp implements ProductDAO {
 
     @Override
     @Transactional
-    public void deleteProduct(Product product) {
-//        Session session = this.sessionFactory.getCurrentSession();
-////        Product productDelete = findByName(product.getNameProduct());
-//        if (productDelete != null) {
-//            session.delete(productDelete);
-//        } else {
-//            System.out.println("Retry delete new product");
-//        }
+    public void deleteProduct(Integer productID) {
+        Session session = this.sessionFactory.getCurrentSession();
+        Query query = session.createQuery("from Product p where p.id like'" + productID + "'");
+        Product productDelete = (Product) ((org.hibernate.query.Query)query).list().get(0);
+        session.delete(productDelete);
+        listProducts();
     }
 
     @Override
