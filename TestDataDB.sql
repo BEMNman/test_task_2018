@@ -1,15 +1,15 @@
-DROP TABLE IF EXISTS `test`.`product`;
-CREATE TABLE `test`.`product`
+DROP TABLE IF EXISTS `test`.`part`;
+CREATE TABLE `test`.`part`
 (
-  `idProduct` INT         NOT NULL AUTO_INCREMENT,
-  `product`   VARCHAR(45) UNIQUE DEFAULT 'new_product',
-  `isNeeded`  BIT         NOT NULL DEFAULT 0,
+  `idPart` INT         NOT NULL AUTO_INCREMENT,
+  `part`   VARCHAR(45) UNIQUE   DEFAULT 'new_part',
+  `isNeeded`  BOOLEAN     NOT NULL DEFAULT false,
   `amount`    VARCHAR(45) NOT NULL DEFAULT 0,
-  PRIMARY KEY (`idProduct`)
+  PRIMARY KEY (`idPart`)
 )
   ENGINE = InnoDB
   DEFAULT CHARSET = utf8;
-INSERT INTO product (product, isNeeded, amount)
+INSERT INTO part (part, isNeeded, amount)
 VALUES ('Монитор', 1, 33),
        ('Мышка', 1, 10),
        ('Камера', 0, 8),
@@ -30,5 +30,5 @@ VALUES ('Монитор', 1, 33),
        ('Наушники', 0, 20),
        ('Корпус', 1, 14),
        ('USB карта', 0, 7),
-       ('Кейса для SSD', 0, 21),
+       ('Кейс для SSD', 0, 21),
        ('Видеокарта', 0, 5);
