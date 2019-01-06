@@ -37,21 +37,19 @@ public class Controller {
     }
 
     public ModelAndView listParts(List<Part> partList) {
-        List<Object> dataForJsp = new ArrayList<>();
         if (partList == null) {
             if(!inSearch) {
-                dataForJsp.add(partDAOService.listParts());
+                modelAndView.addObject("parts", partDAOService.listParts());
             } else {
                 System.out.println("+++++++++" + partDAOService.getPartsByName());
-                dataForJsp.add(partDAOService.getPartsByName());
+                modelAndView.addObject("parts", partDAOService.getPartsByName());
             }
 
         } else {
-            dataForJsp.add(partList);
+            modelAndView.addObject("parts", partList);
         }
-        dataForJsp.add(partDAOService.countComputer());
-        dataForJsp.add(selectListPartsForView);
-        modelAndView.addObject("part", dataForJsp);
+        modelAndView.addObject("countComputer", partDAOService.countComputer());
+        modelAndView.addObject("selectListPartsForView", selectListPartsForView);
         modelAndView.setViewName("listParts");
         return modelAndView;
     }
@@ -62,12 +60,10 @@ public class Controller {
                                    @RequestParam(value = "listMenu", defaultValue = "All") String listMenu) {
         this.inSearch = inSearch;
         selectListPartsForView = listMenu;
-        List<Object> dataForJsp = new ArrayList<>();
-        dataForJsp.add(partDAOService.findByName(namePart));
-        dataForJsp.add(partDAOService.countComputer());
-        dataForJsp.add(selectListPartsForView);
-        modelAndView.addObject("part", dataForJsp);
-        return modelAndView;
+//        modelAndView.addObject("parts",partDAOService.findByName(namePart));
+//        modelAndView.addObject("countComputer", partDAOService.countComputer());
+//        modelAndView.addObject("selectListPartsForView", selectListPartsForView);
+        return listParts(partDAOService.findByName(namePart));
     }
 
     @RequestMapping(value = "/createPart")

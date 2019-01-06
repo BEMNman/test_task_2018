@@ -34,17 +34,17 @@
 <p>Фильтровать по:</p>
 <form action="<c:url value="/selectListPartsForView"/> " method="post">
     <p><select name="listMenu">
-        <c:if test="${part.get(2).equals('All')}">
+        <c:if test="${selectListPartsForView.equals('All')}">
             <option selected value="All">Все</option>
             <option value="isNeeded">Необходимые</option>
             <option value="options">Опциональные</option>
         </c:if>
-        <c:if test="${part.get(2).equals('isNeeded')}">
+        <c:if test="${selectListPartsForView.equals('isNeeded')}">
             <option value="All">Все</option>
             <option selected value="isNeeded">Необходимые</option>
             <option value="options">Опциональные</option>
         </c:if>
-        <c:if test="${part.get(2).equals('options')}">
+        <c:if test="${selectListPartsForView.equals('options')}">
             <option value="All">Все</option>
             <option value="isNeeded">Необходимые</option>
             <option selected value="options">Опциональные</option>
@@ -53,7 +53,7 @@
     <input type="submit" value="Выбрать">
 </form>
 
-<c:if test="${part.get(0).size() > 0}">
+<c:if test="${parts.size() > 0}">
     <table class="w3-centered" bgcolor="#808080" style="border: 2px solid; width: 600px; text-align:center;">
 
         <tr>
@@ -63,7 +63,7 @@
             <th class="w3-centered" bgcolor="white">Действие</th>
         </tr>
         <tbody class="w3-centered" bgcolor="white">
-        <c:forEach items="${part.get(0)}" var="part">
+        <c:forEach items="${parts}" var="part">
             <tr>
                 <td height="30px" align="left"><c:out value="${part.namePart}"/></td>
                 <c:if test="${part.isNeeded == true}">
@@ -93,7 +93,7 @@
         </tbody>
     </table>
 </c:if>
-<c:if test="${part.get(0).size() == 0}">
+<c:if test="${parts.size() == 0}">
     <p>В списке нет комплектующих</p>
 </c:if>
 
@@ -101,15 +101,15 @@
     <tr>
         <td width="40%" height="30px" bgcolor="white" align="left">Можно собрать</td>
         <td width="20%" bgcolor="white">
-            <c:out value="${part.get(1)}"/>
+            <c:out value="${countComputer}"/>
         </td>
-        <c:if test="${(part.get(1) >= 2 && part.get(1) <= 4) || (part.get(1) > 20 && part.get(1)%10 >= 2 && part.get(1)%10 <= 4)}">
+        <c:if test="${(countComputer >= 2 && countComputer <= 4) || (countComputer > 20 && countComputer%10 >= 2 && countComputer%10 <= 4)}">
             <td bgcolor="white"> компьютера</td>
         </c:if>
-        <c:if test="${((part.get(1) == 0 || part.get(1) >= 5) && part.get(1) <= 20) || (part.get(1) > 20 && part.get(1)%10 >= 5 && part.get(1)%10 <= 9)}">
+        <c:if test="${((countComputer == 0 || countComputer >= 5) && countComputer <= 20) || (countComputer > 20 && countComputer%10 >= 5 && countComputer%10 <= 9)}">
             <td bgcolor="white"> компьютеров</td>
         </c:if>
-        <c:if test="${part.get(1) == 1 || (part.get(1) != 11 && part.get(1)%10 == 1)}">
+        <c:if test="${countComputer == 1 || (countComputer != 11 && countComputer%10 == 1)}">
             <td bgcolor="white"> компьютер</td>
         </c:if>
     </tr>
