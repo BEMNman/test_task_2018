@@ -33,10 +33,6 @@ public class Part {
         return id;
     }
 
-//    public void setId(int id) {
-//        this.id = id;
-//    }
-
     public String getNamePart() {
         return namePart;
     }

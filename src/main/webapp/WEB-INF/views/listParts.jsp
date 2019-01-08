@@ -2,6 +2,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt_rt" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="C" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
     <meta charset="utf-8">
@@ -19,7 +20,14 @@
     <tr>
         <td>
             <form action="<c:url value='/searchPart' />">
-                <input type="text" title="Не менее 3 символов" pattern="^[A-Za-zА-Яа-яЁё0-9\s]{3,}" name="search" placeholder="Поиск по имени"/>
+                <input type="text" title="Не менее 3 символов" pattern="^[A-Za-zА-Яа-яЁё0-9\s]{3,}" name="search"
+                        <c:if test="${search != null}">
+                            value=" <c:out value="${search}"/>"
+                        </c:if>
+                        <c:if test="${search == null}">
+                            placeholder="Поиск по имени"
+                        </c:if>
+                />
                 <button>Поиск</button>
                 <input type="hidden" name="inSearch" value="true">
             </form>
@@ -79,11 +87,11 @@
                             margin: 1px; /* Убираем отступы */
                         }
                     </style>
-                    <form action="<c:url value='/updatePart' />">
-                        <input type="text" name="updatePart" value="${part.id}" hidden/>
+                    <form action="<c:url value='/editPart'/>" method="post">
+                        <input type="text" name="editPart" value="${part.id}" hidden/>
                         <button style="height:21px;width:110px">Редактировать</button>
                     </form>
-                    <form action="<c:url value='/deletePart' />">
+                    <form action="<c:url value='/deletePart' />" method="post">
                         <input type="text" name="deletePart" value="${part.id}" hidden/>
                         <button style="height:21px;width:110px">Удалить</button>
                     </form>

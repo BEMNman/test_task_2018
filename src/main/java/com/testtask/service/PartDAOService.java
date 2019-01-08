@@ -13,4 +13,5 @@ public interface PartDAOService {
     List<Part> listParts();
     int countComputer();
     List<Part> getPartsByName();
+    Part getPartByID(Integer idPart);
 }

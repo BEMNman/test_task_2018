@@ -57,4 +57,9 @@ public class PartDAOServiceImp implements PartDAOService {
     public List<Part> getPartsByName() {
         return partDAO.getPartsByName();
     }
+
+    @Override
+    public Part getPartByID(Integer idPart) {
+        return partDAO.getPartByID(idPart);
+    }
 }

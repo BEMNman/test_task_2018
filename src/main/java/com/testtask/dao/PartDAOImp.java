@@ -38,7 +38,6 @@ public class PartDAOImp implements PartDAO {
         String namePart = part.getNamePart();
         Session session = this.sessionFactory.getCurrentSession();
         Query query = session.createQuery("select p.namePart from Part p where p.namePart like '" + namePart + "'");
-        System.out.println("!!!!! " + query.getResultList());
         if (! query.getResultList().contains(part.getNamePart())) {
             session.persist(part);
         }
@@ -53,9 +52,7 @@ public class PartDAOImp implements PartDAO {
         partsByName = null;
         try {
             Session session = this.sessionFactory.getCurrentSession();
-            Query query = session.createQuery("from Part p where p.id like'" + partID + "'");
-            Part partDelete = (Part) query.getResultList().get(0);
-            session.delete(partDelete);
+            session.delete(getPartByID(partID));
             listParts();
         } catch (IndexOutOfBoundsException e) {
             listParts();
@@ -66,11 +63,7 @@ public class PartDAOImp implements PartDAO {
     @Transactional
     public void updatePart(Part part) {
         Session session = sessionFactory.getCurrentSession();
-        Part partExist = session.get(Part.class, part.getId());
-        partExist.setNamePart(part.getNamePart());
-        partExist.setIsNeeded(part.getIsNeeded());
-        partExist.setAmount(part.getAmount());
-        session.save(partExist);
+        session.update(part);
     }
 
     @Override
@@ -112,4 +105,11 @@ public class PartDAOImp implements PartDAO {
         return partsByName;
     }
 
+    @Override
+    @Transactional
+    public Part getPartByID(Integer idPart) {
+        Session session = this.sessionFactory.getCurrentSession();
+        Part partID = session.get(Part.class, idPart);
+        return partID;
+    }
 }
