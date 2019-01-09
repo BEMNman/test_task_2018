@@ -34,8 +34,8 @@ public class PartDAOServiceImp implements PartDAOService {
     }
 
     @Override
-    public void updatePart(Part parct) {
-        partDAO.updatePart(parct);
+    public void updatePart(Part part) {
+        partDAO.updatePart(part);
     }
 
     @Override

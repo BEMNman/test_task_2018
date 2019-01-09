@@ -9,7 +9,7 @@
     <title>Комплектующие</title>
     <%--<link href="/webapp/WEB-INF/static/w3.css" rel="stylesheet">--%>
 </head>
-<body>
+
 <div>
     <a href="<c:url value='/listParts' />">Главная</a>
 </div>
@@ -17,7 +17,7 @@
     Новый товар
 </strong>
 
-<form action="<c:url value='/createPart' />">
+<form name="part" action="<c:url value='/createPart' />" method="post">
     <p>
         Наименование:
         <input type="text" title="Наименование" name="namePart" value="новые комплектующие">
@@ -35,12 +35,15 @@
     </p>
     <p>
         <button>Добавить</button>
-        <a href="<c:url value='/listParts'/>">
+        <a href="<c:url value='/'/>">
             <button type="button">Отмена</button>
         </a>
     </p>
 </form>
-
-
+<c:if test="${partExist == true}">
+    <h1>
+        Добавить невозможно! Такое наименование комплектующего уже есть на скаладе.
+    </h1>
+</c:if>
 </body>
 </html>

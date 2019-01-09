@@ -8,7 +8,7 @@ public interface PartDAOService {
     List<Part> findByName(String namePart);
     void addPart(Part part)  throws HandlingException;
     void deletePart(Integer partID);
-    void updatePart(Part product);
+    void updatePart(Part part);
     List<Part> findAllPartsIsNeeded(boolean isNeeded);
     List<Part> listParts();
     int countComputer();

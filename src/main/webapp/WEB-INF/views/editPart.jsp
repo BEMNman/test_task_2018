@@ -2,6 +2,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt_rt" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="spring" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
     <meta charset="utf-8">
@@ -17,7 +18,7 @@
     Редактирование товара
 </strong>
 
-<form action="<c:url value='/updatePart' />" >
+<form name="part" action="<c:url value='/updatePart' />" method="post">
     <input type="hidden" name = "partIdEdit" value="${editPart.id}">
     <p>
         Наименование:
@@ -42,12 +43,10 @@
     </p>
     <p>
         <button>Применить</button>
-        <a href="<c:url value='/listParts'/>">
+        <a href="<c:url value='/'/>">
             <button type="button">Отмена</button>
         </a>
     </p>
 </form>
-
-
 </body>
 </html>

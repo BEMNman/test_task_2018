@@ -1,9 +1,8 @@
-<%--<%@ page contentType="text/html;charset=UTF-8" language="java" %>--%>
-<%--<%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt_rt" %>--%>
-<%--<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>--%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt_rt" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%--<%@ taglib prefix="C" uri="http://java.sun.com/jsp/jstl/core" %>--%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="C" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
     <meta charset="utf-8">
@@ -13,9 +12,9 @@
 </head>
 <body>
 
-<%--<div>--%>
-    <%--<a href="<c:url value='/' />">Главная</a>--%>
-<%--</div>--%>
+<div>
+    <a href="<c:url value='/' />">Главная</a>
+</div>
 
 <table style="width: 600px; padding-bottom: 20px">
     <tr>
@@ -33,11 +32,11 @@
                 <%--<input type="hidden" name="inSearch" value="true">--%>
             </form>
         </td>
-        <td align="right">
-            <form action="<c:url value='/addPart' />">
-                <button>Добавить</button>
-            </form>
-        </td>
+        <%--<td align="right">--%>
+            <%--<form action="<c:url value='/addPart' />" method="post">--%>
+                <%--<button>Добавить</button>--%>
+            <%--</form>--%>
+        <%--</td>--%>
     </tr>
 </table>
 <p>Фильтровать по:</p>
@@ -106,23 +105,22 @@
     <p>В списке нет комплектующих</p>
 </c:if>
 
-<table width="600px" bgcolor="#808080" border="2px" style="margin-top: 20px;  text-align:center">
-    <tr>
-        <td width="40%" height="30px" bgcolor="white" align="left">Можно собрать</td>
-        <td width="20%" bgcolor="white">
-            <c:out value="${countComputer}"/>
-        </td>
-        <c:if test="${(countComputer >= 2 && countComputer <= 4) || (countComputer > 20 && countComputer%10 >= 2 && countComputer%10 <= 4)}">
-            <td bgcolor="white"> компьютера</td>
-        </c:if>
-        <c:if test="${((countComputer == 0 || countComputer >= 5) && countComputer <= 20) || (countComputer > 20 && countComputer%10 >= 5 && countComputer%10 <= 9)}">
-            <td bgcolor="white"> компьютеров</td>
-        </c:if>
-        <c:if test="${countComputer == 1 || (countComputer != 11 && countComputer%10 == 1)}">
-            <td bgcolor="white"> компьютер</td>
-        </c:if>
-    </tr>
-</table>
-
+<%--<table width="600px" bgcolor="#808080" border="2px" style="margin-top: 20px;  text-align:center">--%>
+    <%--<tr>--%>
+        <%--<td width="40%" height="30px" bgcolor="white" align="left">Можно собрать</td>--%>
+        <%--<td width="20%" bgcolor="white">--%>
+            <%--<c:out value="${countComputer}"/>--%>
+        <%--</td>--%>
+        <%--<c:if test="${(countComputer >= 2 && countComputer <= 4) || (countComputer > 20 && countComputer%10 >= 2 && countComputer%10 <= 4)}">--%>
+            <%--<td bgcolor="white"> компьютера</td>--%>
+        <%--</c:if>--%>
+        <%--<c:if test="${((countComputer == 0 || countComputer >= 5) && countComputer <= 20) || (countComputer > 20 && countComputer%10 >= 5 && countComputer%10 <= 9)}">--%>
+            <%--<td bgcolor="white"> компьютеров</td>--%>
+        <%--</c:if>--%>
+        <%--<c:if test="${countComputer == 1 || (countComputer != 11 && countComputer%10 == 1)}">--%>
+            <%--<td bgcolor="white"> компьютер</td>--%>
+        <%--</c:if>--%>
+    <%--</tr>--%>
+<%--</table>--%>
 </body>
 </html>
