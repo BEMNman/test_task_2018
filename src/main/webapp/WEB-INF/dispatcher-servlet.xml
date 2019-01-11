@@ -14,11 +14,9 @@
             http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
     <context:component-scan base-package="com.testtask"/>
-    <!--<context:component-scan base-package="com.testtask.dao, com.testtask.controller, com.testtask.service"/>-->
 
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/WEB-INF/views/"/>
-        <!--<property name="prefix" value="/WEB-INF/"/>-->
         <property name="suffix" value=".jsp"/>
     </bean>
 
@@ -31,17 +29,6 @@
         <property name="username" value="root"/>
         <property name="password" value="root"/>
     </bean>
-
-    <!--Можно запустить базу без MySQL сервера, через h2. Необходимо раскомментировать этот блок и закомментировать предыдущий.-->
-    <!--Путь для h2 скрипта WEB-INF/classes/create_database_script.sql-->
-
-    <!--
-        <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" >
-             <property name="driverClassName" value="org.h2.Driver"/>
-            <property name="connectionProperties" value="useUnicode=yes;characterEncoding=utf8;"/>
-             <property name="url" value="jdbc:h2:mem:test;MODE=MySQL;INIT=RUNSCRIPT FROM 'classpath:create_database_script.sql';DB_CLOSE_ON_EXIT=TRUE;" />
-         </bean>
-    -->
 
     <!-- hibernate -->
     <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">

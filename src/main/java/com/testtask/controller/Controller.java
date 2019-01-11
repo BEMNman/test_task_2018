@@ -4,6 +4,7 @@ import com.testtask.HandlingException;
 import com.testtask.entity.Part;
 import com.testtask.service.PartDAOService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.support.PagedListHolder;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -28,7 +29,7 @@ public class Controller {
         this.modelAndView = new ModelAndView();
         this.selectListPartsForView = "All";
         this.inSearch = false;
-        this.search = null;
+        this.search = "";
         this.modelParts = new ArrayList<>();
     }
 
@@ -36,43 +37,86 @@ public class Controller {
     public String start() {
         this.selectListPartsForView = "All";
         this.inSearch = false;
-        this.search = null;
+        this.search = "";
         modelParts = partDAOService.listParts();
         return "redirect:/listParts";
     }
 
-    @RequestMapping(value = {"/listParts"}, method = RequestMethod.GET)
-    public ModelAndView listParts() {
-        modelAndView.addObject("countComputer", partDAOService.countComputer());
-        modelAndView.addObject("selectListPartsForView", selectListPartsForView);
-        modelAndView.addObject("search", search);
-        modelAndView.addObject("parts", modelParts);
-        modelAndView.setViewName("listParts");
-        return modelAndView;
+//    @RequestMapping(value = {"/listParts"}, method = RequestMethod.GET)
+//    public ModelAndView listParts() {
+//        List<Part> partList = new ArrayList<>();
+//        switch (selectListPartsForView) {
+//            case "All":
+//                partList = modelParts;
+//                break;
+//            case "isNeeded":
+//                for(Part p : modelParts) {
+//                    if(p.getIsNeeded()) {
+//                        partList.add(p);
+//                    }
+//                }
+//                break;
+//            case "options":
+//                for(Part p : modelParts) {
+//                    if(!p.getIsNeeded()) {
+//                        partList.add(p);
+//                    }
+//                }
+//        }
+//        modelAndView.addObject("countComputer", partDAOService.countComputer());
+//        modelAndView.addObject("selectListPartsForView", selectListPartsForView);
+//        modelAndView.addObject("search", search);
+//        modelAndView.addObject("parts", partList);
+//        modelAndView.setViewName("listParts");
+//        return modelAndView;
+//    }
+
+
+    @RequestMapping(value = "/listParts", method = RequestMethod.GET)
+    public ModelAndView userListPage(@RequestParam(required = false) Integer page) {
+        ModelAndView model = new ModelAndView("listParts");
+        List<Part> parts = partDAOService.listParts();
+
+
+        PagedListHolder<Part> pagedListHolder = new PagedListHolder<>(parts);
+        pagedListHolder.setPageSize(10);
+        int numberOfPages = pagedListHolder.getPageCount();
+        model.addObject("maxPages", numberOfPages);
+
+        if (page == null || page < 1 || page > pagedListHolder.getPageCount()) page = 1;
+
+        model.addObject("page", page);
+        if (page == null || page < 1 || page > pagedListHolder.getPageCount()) {
+            pagedListHolder.setPage(0);
+            parts = pagedListHolder.getPageList();
+            model.addObject("parts", parts);
+        } else if (page <= pagedListHolder.getPageCount()) {
+            pagedListHolder.setPage(page - 1);
+            parts = pagedListHolder.getPageList();
+            model.addObject("parts", parts);
+            model.addObject("countComputer", partDAOService.countComputer());
+            model.addObject("selectListPartsForView", selectListPartsForView);
+            model.addObject("search", search);
+        }
+        return model;
     }
 
     @GetMapping(value = "/searchPart")
-    public ModelAndView searchPart(@RequestParam(value = "search", defaultValue = "") String namePart,
-                                   @RequestParam(value = "listMenu", defaultValue = "All") String listMenu) {
-        if (!namePart.equals("")) {
-            inSearch = true;
-            search = namePart;
-            selectListPartsForView = listMenu;
-            modelParts = partDAOService.findByName(search);
-        } else {
-            search = null;
-            modelParts = partDAOService.listParts();
-        }
-        modelAndView = listParts();
+    public ModelAndView searchPart(@RequestParam(value = "search", defaultValue = "") String namePart) {
+        inSearch = true;
+        search = namePart.trim();
+        selectListPartsForView = "All";
+        modelParts = partDAOService.findByName(search);
+        modelAndView = userListPage(1);
+//        modelAndView = listParts();
         modelAndView.setViewName("/searchPart");
         return modelAndView;
     }
 
-
     @RequestMapping(value = "/addPart")
-    public String addPart(@RequestParam(value = "partExist", defaultValue = "false") boolean partExist,
-                          Model model) {
-        model.addAttribute("partExist", partExist);
+    public String addPart(@RequestParam(value = "isExistPart", defaultValue = "false") boolean isExistPart, Model model) {
+        model.addAttribute("isExistPart", isExistPart);
+        model.addAttribute("partAdd", new Part());
         return "/addPart";
     }
 
@@ -80,10 +124,10 @@ public class Controller {
     public String createPart(@ModelAttribute("part") Part part, Model model) {
         try {
             partDAOService.addPart(part);
-            modelParts = partDAOService.listParts();
         } catch (HandlingException e) {
             e.getStackTrace();
-            model.addAttribute("partExist", true);
+            model.addAttribute("isExistPart", true);
+            model.addAttribute("partAdd", part);
             return "/addPart";
         }
         return "redirect:/";
@@ -97,63 +141,28 @@ public class Controller {
     }
 
     @GetMapping(value = "/selectListPartsForView")
-    public String selectListPartsForView(@RequestParam(value = "listMenu", defaultValue = "All") String listMenu) {
+    public ModelAndView selectListPartsForView(@RequestParam(value = "listMenu", defaultValue = "All") String listMenu) {
         selectListPartsForView = listMenu;
-        /*
-         * фильтрация в зависимости нахождении в форме(вне формы) "searchPart"
-         */
+        modelAndView = userListPage(1);
+//        modelAndView = listParts();
         if (inSearch) {
-            List<Part> partArrayListInSearchExist = partDAOService.getPartsByName();
-            switch (listMenu) {
-                case "All":
-                    modelParts = partArrayListInSearchExist;
-                    break;
-                case "isNeeded":
-                    modelParts = new ArrayList<>();
-                    partArrayListInSearchExist.forEach(part -> {
-                        if (part.getIsNeeded()) modelParts.add(part);
-                    });
-                    break;
-                case "options":
-                    modelParts = new ArrayList<>();
-                    partArrayListInSearchExist.forEach(part -> {
-                        if (!part.getIsNeeded()) modelParts.add(part);
-                    });
-            }
-            return "redirect:/searchPart";
+            modelAndView.setViewName("/searchPart");
         } else {
-            switch (listMenu) {
-                case "All":
-                    modelParts = partDAOService.listParts();
-                    break;
-                case "isNeeded":
-                    modelParts = partDAOService.findAllPartsIsNeeded(true);
-                    break;
-                case "options":
-                    modelParts = partDAOService.findAllPartsIsNeeded(false);
-            }
+            modelAndView.setViewName("/listParts");
         }
-        return "redirect:/listParts";
-    }
-
-    @RequestMapping(value = "/editPart")
-    public ModelAndView editPart(@RequestParam("editPart") Integer editPartID) {
-        Part editPart = partDAOService.getPartByID(editPartID);
-        modelAndView.addObject("editPart", editPart);
-        modelAndView.setViewName("/editPart");
         return modelAndView;
     }
 
-    @RequestMapping(value = "/updatePart")
-    public String updatePart(@RequestParam("partIdEdit") Integer partIdEdit,
-                             @RequestParam("newNamePart") String newNamePart,
-                             @RequestParam(value = "newIsNeeded", defaultValue = "false") boolean newIsNeeded,
-                             @RequestParam("newAmount") int newAmount) {
-        Part partUpdate = partDAOService.getPartByID(partIdEdit);
-        partUpdate.setNamePart(newNamePart);
-        partUpdate.setIsNeeded(newIsNeeded);
-        partUpdate.setAmount(newAmount);
-        partDAOService.updatePart(partUpdate);
+    @RequestMapping(value = "/editPart")
+    public String editPart(@ModelAttribute("editPartId") Integer editPartID, Model model) {
+        Part editPart = partDAOService.getPartByID(editPartID);
+        model.addAttribute("editPart", editPart);
+        return "/editPart";
+    }
+
+    @RequestMapping(value = "/updatePart", method = RequestMethod.POST)
+    public String updatePart(@ModelAttribute("editPart") Part part) {
+        partDAOService.updatePart(part);
         modelParts = partDAOService.listParts();
         return "redirect:/";
     }

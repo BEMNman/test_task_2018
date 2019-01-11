@@ -7,6 +7,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+
 import javax.persistence.Query;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -38,11 +39,11 @@ public class PartDAOImp implements PartDAO {
         String namePart = part.getNamePart();
         Session session = this.sessionFactory.getCurrentSession();
         Query query = session.createQuery("select p.namePart from Part p where p.namePart like '" + namePart + "'");
-        if (! query.getResultList().contains(part.getNamePart())) {
+        if (!query.getResultList().contains(part.getNamePart())) {
             session.persist(part);
-        }
-        else {
+        } else {
             throw new HandlingException();
+
         }
     }
 
@@ -76,7 +77,7 @@ public class PartDAOImp implements PartDAO {
         parts.addAll(query.getResultList());
         List<Integer> amountParts = new ArrayList<>();
         parts.forEach(p -> {
-            if(p.getIsNeeded() == true) {
+            if (p.getIsNeeded() == true) {
                 amountParts.add(p.getAmount());
             }
         });
@@ -93,6 +94,7 @@ public class PartDAOImp implements PartDAO {
         parts.addAll(query.getResultList());
         return parts;
     }
+
     @Override
     @Transactional
     public int countComputer() {
@@ -101,7 +103,7 @@ public class PartDAOImp implements PartDAO {
 
     @Override
     @Transactional
-    public List<Part> getPartsByName(){
+    public List<Part> getPartsByName() {
         return partsByName;
     }
 

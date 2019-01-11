@@ -23,14 +23,21 @@ public class Part {
     public Part() {
     }
 
-    public Part(String namePart, boolean isNeeded, int amount) {
+    public Part(Integer id, String namePart, boolean isNeeded, int amount) {
+        this.id = id;
         this.namePart = namePart;
         this.isNeeded = isNeeded;
         this.amount = amount;
     }
 
+
+
     public Integer getId() {
         return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getNamePart() {

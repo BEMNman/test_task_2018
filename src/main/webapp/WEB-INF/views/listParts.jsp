@@ -14,7 +14,7 @@
 <body>
 
 <%--<div>--%>
-    <%--<a href="<c:url value='/' />">Главная</a>--%>
+<%--<a href="<c:url value='/' />">Главная</a>--%>
 <%--</div>--%>
 
 <table style="width: 600px; padding-bottom: 20px">
@@ -22,10 +22,10 @@
         <td>
             <form action="<c:url value='/searchPart' />" method="get">
                 <input type="text" title="Не менее 3 символов" pattern="^[A-Za-zА-Яа-яЁё0-9\s]{3,}" name="search"
-                        <c:if test="${search != null}">
+                        <c:if test="${!search.equals('')}">
                             value=" <c:out value="${search}"/>"
                         </c:if>
-                        <c:if test="${search == null}">
+                        <c:if test="${search.equals('')}">
                             placeholder="Поиск по имени"
                         </c:if>
                 />
@@ -89,7 +89,7 @@
                         }
                     </style>
                     <form action="<c:url value='/editPart'/>" method="post">
-                        <input type="text" name="editPart" value="${part.id}" hidden/>
+                        <input type="text" name="editPartId" value="${part.id}" hidden/>
                         <button style="height:21px;width:110px">Редактировать</button>
                     </form>
                     <form action="<c:url value='/deletePart' />" method="post">
@@ -105,7 +105,7 @@
 <c:if test="${parts.size() == 0}">
     <p>В списке нет комплектующих</p>
 </c:if>
-
+<div>
 <table width="600px" bgcolor="#808080" border="2px" style="margin-top: 20px;  text-align:center">
     <tr>
         <td width="40%" height="30px" bgcolor="white" align="left">Можно собрать</td>
@@ -123,6 +123,13 @@
         </c:if>
     </tr>
 </table>
+
+<ul class="pagination pagination-sm">
+    <li class="page-item"><a class="page-link" href="/SpringMvcPagination/init/1">1</a></li>
+    <li class="page-item"><a class="page-link" href="/SpringMvcPagination/init/2">2</a></li>
+    <li class="page-item"><a class="page-link" href="/SpringMvcPagination/init/3">3</a></li>
+</ul>
+</div>
 
 </body>
 </html>

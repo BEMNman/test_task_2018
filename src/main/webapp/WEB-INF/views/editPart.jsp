@@ -8,45 +8,36 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Комплектующие</title>
-    <%--<link href="/webapp/WEB-INF/static/w3.css" rel="stylesheet">--%>
 </head>
 <body>
 <div>
     <a href="<c:url value='/listParts' />">Главная</a>
 </div>
-<strong>
-    Редактирование товара
-</strong>
 
-<form name="part" action="<c:url value='/updatePart' />" method="post">
-    <input type="hidden" name = "partIdEdit" value="${editPart.id}">
-    <p>
-        Наименование:
-        <input type="text" title="Наименование" name="newNamePart" value="<c:out value="${editPart.namePart}"/>">
-    </p>
-    <p>
-        Необходимость:
-        <c:if test="${editPart.isNeeded == true}">
-            <input type="checkbox" checked name="newIsNeeded">
-        </c:if>
-        <c:if test="${editPart.isNeeded != true}">
-            <input type="checkbox" name="newIsNeeded">
-        </c:if>
-        <span>
-            да, необходимы для сборки
-        </span>
-    </p>
-    <p>
-        Количество:
-        <input type="text" title="Введите число" pattern="^[0-9]+$" name="newAmount"
-               value="<c:out value="${editPart.amount}"/>">
-    </p>
-    <p>
-        <button>Применить</button>
-        <a href="<c:url value='/'/>">
-            <button type="button">Отмена</button>
-        </a>
-    </p>
-</form>
+<div align="center">
+    <h1>Редактирование позиции товара</h1>
+    <c:url var="updatePart" value="/updatePart"/>
+    <form:form id="updatePart" method="POST" modelAttribute="editPart" action="${updatePart}">
+        <form:hidden path="id"/>
+        <table>
+            <tr>
+                <td>Наименование:</td>
+                <td><form:input path="namePart"/></td>
+            </tr>
+            <tr>
+                <td>Необходимость:</td>
+                <td><form:checkbox path="isNeeded"/></td>
+            </tr>
+            <tr>
+                <td>Количество:</td>
+                <td><form:input path="amount"/></td>
+            </tr>
+
+            <tr>
+                <td colspan="2" align="center"><input type="submit" value="Сохранить"/></td>
+            </tr>
+        </table>
+    </form:form>
+</div>
 </body>
 </html>
