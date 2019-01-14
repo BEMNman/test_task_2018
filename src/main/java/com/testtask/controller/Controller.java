@@ -16,10 +16,11 @@ import java.util.List;
 public class Controller {
 
     private String selectListPartsForView;  //переменная параметра фильтрации
-    private boolean inSearch;               //находимся в форме searchPart
+    private boolean inSearch;               //флаг нахождения в форме searchPart
     private String search;                  //запрос поиска
     private List<Part> modelParts;          //список комплектующих для отображения
-    private ModelAndView modelAndView;
+    private ModelAndView modelAndView;      //модель отображения в заданном view
+    private int page;                       //страница списка
 
     @Autowired
     private PartDAOService partDAOService;
@@ -30,85 +31,85 @@ public class Controller {
         this.selectListPartsForView = "All";
         this.inSearch = false;
         this.search = "";
+        this.page = 0;
         this.modelParts = new ArrayList<>();
     }
 
     @RequestMapping(value = {"/"}, method = RequestMethod.GET)
     public String start() {
-        this.selectListPartsForView = "All";
-        this.inSearch = false;
-        this.search = "";
+        selectListPartsForView = "All";
+        inSearch = false;
+        search = "";
+        page = 0;
         modelParts = partDAOService.listParts();
         return "redirect:/listParts";
     }
 
-//    @RequestMapping(value = {"/listParts"}, method = RequestMethod.GET)
-//    public ModelAndView listParts() {
-//        List<Part> partList = new ArrayList<>();
-//        switch (selectListPartsForView) {
-//            case "All":
-//                partList = modelParts;
-//                break;
-//            case "isNeeded":
-//                for(Part p : modelParts) {
-//                    if(p.getIsNeeded()) {
-//                        partList.add(p);
-//                    }
-//                }
-//                break;
-//            case "options":
-//                for(Part p : modelParts) {
-//                    if(!p.getIsNeeded()) {
-//                        partList.add(p);
-//                    }
-//                }
-//        }
-//        modelAndView.addObject("countComputer", partDAOService.countComputer());
-//        modelAndView.addObject("selectListPartsForView", selectListPartsForView);
-//        modelAndView.addObject("search", search);
-//        modelAndView.addObject("parts", partList);
-//        modelAndView.setViewName("listParts");
-//        return modelAndView;
-//    }
-
+    @RequestMapping(value = "/list/{page}", method = RequestMethod.GET)
+    public ModelAndView listPage(@PathVariable(required = false ) Integer page) {
+        this.page = page;
+        if(inSearch) {
+            modelAndView = searchPart(search);
+            modelAndView.setViewName("/searchPart");
+        } else {
+            modelAndView = listParts();
+            modelAndView.setViewName("/listParts");
+        }
+        return modelAndView;
+    }
 
     @RequestMapping(value = "/listParts", method = RequestMethod.GET)
-    public ModelAndView userListPage(@RequestParam(required = false) Integer page) {
-        ModelAndView model = new ModelAndView("listParts");
-        List<Part> parts = partDAOService.listParts();
-
-
+    public ModelAndView listParts() {
+        modelAndView.setViewName("listParts");
+        List<Part> parts = new ArrayList<>();
+        switch (selectListPartsForView) {
+            case "All":
+                parts = modelParts;
+                break;
+            case "isNeeded":
+                for(Part p : modelParts) {
+                    if(p.getIsNeeded()) {
+                        parts.add(p);
+                    }
+                }
+                break;
+            case "options":
+                for(Part p : modelParts) {
+                    if(!p.getIsNeeded()) {
+                        parts.add(p);
+                    }
+                }
+        }
         PagedListHolder<Part> pagedListHolder = new PagedListHolder<>(parts);
         pagedListHolder.setPageSize(10);
         int numberOfPages = pagedListHolder.getPageCount();
-        model.addObject("maxPages", numberOfPages);
-
-        if (page == null || page < 1 || page > pagedListHolder.getPageCount()) page = 1;
-
-        model.addObject("page", page);
-        if (page == null || page < 1 || page > pagedListHolder.getPageCount()) {
+        modelAndView.addObject("maxPages", numberOfPages);
+        if (page == 0 || page < 1 || page > pagedListHolder.getPageCount()) page = 1;
+        modelAndView.addObject("page", page);
+        if (page == 0 || page < 1 || page > pagedListHolder.getPageCount()) {
             pagedListHolder.setPage(0);
             parts = pagedListHolder.getPageList();
-            model.addObject("parts", parts);
+            modelAndView.addObject("parts", parts);
         } else if (page <= pagedListHolder.getPageCount()) {
             pagedListHolder.setPage(page - 1);
             parts = pagedListHolder.getPageList();
-            model.addObject("parts", parts);
-            model.addObject("countComputer", partDAOService.countComputer());
-            model.addObject("selectListPartsForView", selectListPartsForView);
-            model.addObject("search", search);
+            modelAndView.addObject("parts", parts);
+            modelAndView.addObject("countComputer", partDAOService.countComputer());
+            modelAndView.addObject("selectListPartsForView", selectListPartsForView);
+            modelAndView.addObject("page", page);
+            modelAndView.addObject("search", search);
         }
-        return model;
+        return modelAndView;
     }
 
     @GetMapping(value = "/searchPart")
     public ModelAndView searchPart(@RequestParam(value = "search", defaultValue = "") String namePart) {
+        if(!inSearch) page = 0;
         inSearch = true;
         search = namePart.trim();
         selectListPartsForView = "All";
         modelParts = partDAOService.findByName(search);
-        modelAndView = userListPage(1);
-//        modelAndView = listParts();
+        modelAndView = listParts();
         modelAndView.setViewName("/searchPart");
         return modelAndView;
     }
@@ -143,8 +144,8 @@ public class Controller {
     @GetMapping(value = "/selectListPartsForView")
     public ModelAndView selectListPartsForView(@RequestParam(value = "listMenu", defaultValue = "All") String listMenu) {
         selectListPartsForView = listMenu;
-        modelAndView = userListPage(1);
-//        modelAndView = listParts();
+        page = 0;
+        modelAndView = listParts();
         if (inSearch) {
             modelAndView.setViewName("/searchPart");
         } else {

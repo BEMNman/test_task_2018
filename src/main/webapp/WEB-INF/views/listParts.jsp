@@ -1,26 +1,16 @@
-<%--<%@ page contentType="text/html;charset=UTF-8" language="java" %>--%>
-<%--<%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt_rt" %>--%>
-<%--<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>--%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%--<%@ taglib prefix="C" uri="http://java.sun.com/jsp/jstl/core" %>--%>
 <html>
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Комплектующие</title>
-    <link href="/webapp/WEB-INF/static/w3.css" rel="stylesheet">
 </head>
 <body>
-
-<%--<div>--%>
-<%--<a href="<c:url value='/' />">Главная</a>--%>
-<%--</div>--%>
-
-<table style="width: 600px; padding-bottom: 20px">
+<table style="width: 570px; padding-bottom: 20px; padding-top: 18px">
     <tr>
         <td>
-            <form action="<c:url value='/searchPart' />" method="get">
+            <form action="<c:url value='/searchPart'/>" method="get">
                 <input type="text" title="Не менее 3 символов" pattern="^[A-Za-zА-Яа-яЁё0-9\s]{3,}" name="search"
                         <c:if test="${!search.equals('')}">
                             value=" <c:out value="${search}"/>"
@@ -30,46 +20,49 @@
                         </c:if>
                 />
                 <button>Поиск</button>
-                <%--<input type="hidden" name="inSearch" value="true">--%>
             </form>
         </td>
         <td align="right">
-            <form action="<c:url value='/addPart' />">
+            <form action="<c:url value='/addPart'/>">
                 <button>Добавить</button>
             </form>
         </td>
     </tr>
 </table>
-<p>Фильтровать по:</p>
-<form action="<c:url value="/selectListPartsForView"/> " method="get">
-    <p><select name="listMenu">
-        <c:if test="${selectListPartsForView.equals('All')}">
-            <option selected value="All">Все</option>
-            <option value="isNeeded">Необходимые</option>
-            <option value="options">Опциональные</option>
-        </c:if>
-        <c:if test="${selectListPartsForView.equals('isNeeded')}">
-            <option value="All">Все</option>
-            <option selected value="isNeeded">Необходимые</option>
-            <option value="options">Опциональные</option>
-        </c:if>
-        <c:if test="${selectListPartsForView.equals('options')}">
-            <option value="All">Все</option>
-            <option value="isNeeded">Необходимые</option>
-            <option selected value="options">Опциональные</option>
-        </c:if>
-    </select></p>
-    <input type="submit" value="Выбрать">
-</form>
-
+<div style="padding-bottom: 10px">
+    <form action="<c:url value="/selectListPartsForView"/> " method="get">
+        <table style="padding-top: 20px">
+            <th>Фильтровать по:</th>
+            <th>
+                <p><select name="listMenu">
+                    <c:if test="${selectListPartsForView.equals('All')}">
+                        <option selected value="All">Все</option>
+                        <option value="isNeeded">Необходимые</option>
+                        <option value="options">Опциональные</option>
+                    </c:if>
+                    <c:if test="${selectListPartsForView.equals('isNeeded')}">
+                        <option value="All">Все</option>
+                        <option selected value="isNeeded">Необходимые</option>
+                        <option value="options">Опциональные</option>
+                    </c:if>
+                    <c:if test="${selectListPartsForView.equals('options')}">
+                        <option value="All">Все</option>
+                        <option value="isNeeded">Необходимые</option>
+                        <option selected value="options">Опциональные</option>
+                    </c:if>
+                </select></p>
+            </th>
+            <th><input type="submit" value="Выбрать"></th>
+        </table>
+    </form>
+</div>
 <c:if test="${parts.size() > 0}">
-    <table class="w3-centered" bgcolor="#808080" style="border: 2px solid; width: 600px; text-align:center;">
-
+    <table class="w3-centered" bgcolor="#808080" style="border: 2px solid; width: 570px; text-align:center">
         <tr>
-            <th class="w3-centered" bgcolor="white">Наименование</th>
-            <th class="w3-centered" bgcolor="white">Необходимость</th>
-            <th class="w3-centered" bgcolor="white">Количество</th>
-            <th class="w3-centered" bgcolor="white">Действие</th>
+            <th class="w3-centered" bgcolor="white" style="width: 200px">Наименование</th>
+            <th class="w3-centered" bgcolor="white" style="width: 140px">Необходимость</th>
+            <th class="w3-centered" bgcolor="white" style="width: 110px">Количество</th>
+            <th class="w3-centered" bgcolor="white" style="width: 120px">Действие</th>
         </tr>
         <tbody class="w3-centered" bgcolor="white">
         <c:forEach items="${parts}" var="part">
@@ -105,31 +98,53 @@
 <c:if test="${parts.size() == 0}">
     <p>В списке нет комплектующих</p>
 </c:if>
-<div>
-<table width="600px" bgcolor="#808080" border="2px" style="margin-top: 20px;  text-align:center">
-    <tr>
-        <td width="40%" height="30px" bgcolor="white" align="left">Можно собрать</td>
-        <td width="20%" bgcolor="white">
-            <c:out value="${countComputer}"/>
-        </td>
-        <c:if test="${(countComputer >= 2 && countComputer <= 4) || (countComputer > 20 && countComputer%10 >= 2 && countComputer%10 <= 4)}">
-            <td bgcolor="white"> компьютера</td>
+<div style="padding-top: 20px">
+    <table class="w3-centered" bgcolor="#808080" style="border: 2px solid; width: 448px; text-align:center;">
+        <tr>
+            <td style="width: 198px; height: 30px; align: left" bgcolor="white">Можно собрать</td>
+            <td style="width: 140px" bgcolor="white">
+                <c:out value="${countComputer}"/>
+            </td>
+            <c:if test="${(countComputer >= 2 && countComputer <= 4) || (countComputer > 20 && countComputer%10 >= 2 && countComputer%10 <= 4)}">
+                <td style="width: 110px" bgcolor="white"> компьютера</td>
+            </c:if>
+            <c:if test="${((countComputer == 0 || countComputer >= 5) && countComputer <= 20) || (countComputer > 20 && countComputer%10 >= 5 && countComputer%10 <= 9)}">
+                <td style="width: 110px" bgcolor="white"> компьютеров</td>
+            </c:if>
+            <c:if test="${countComputer == 1 || (countComputer != 11 && countComputer%10 == 1)}">
+                <td style="width: 110px" bgcolor="white"> компьютер</td>
+            </c:if>
+        </tr>
+    </table>
+    <div style="padding-top: 20px">
+        <c:url value="/list/${page-1}" var="prev">
+            <c:param name="page" value="${page-1}"/>
+        </c:url>
+        <c:if test="${page > 1}">
+            <a href="<c:out value="${prev}" />" class="pn prev">Prev</a>
         </c:if>
-        <c:if test="${((countComputer == 0 || countComputer >= 5) && countComputer <= 20) || (countComputer > 20 && countComputer%10 >= 5 && countComputer%10 <= 9)}">
-            <td bgcolor="white"> компьютеров</td>
-        </c:if>
-        <c:if test="${countComputer == 1 || (countComputer != 11 && countComputer%10 == 1)}">
-            <td bgcolor="white"> компьютер</td>
-        </c:if>
-    </tr>
-</table>
 
-<ul class="pagination pagination-sm">
-    <li class="page-item"><a class="page-link" href="/SpringMvcPagination/init/1">1</a></li>
-    <li class="page-item"><a class="page-link" href="/SpringMvcPagination/init/2">2</a></li>
-    <li class="page-item"><a class="page-link" href="/SpringMvcPagination/init/3">3</a></li>
-</ul>
+        <c:forEach begin="1" end="${maxPages}" step="1" varStatus="i">
+            <c:choose>
+                <c:when test="${page == i.index}">
+                    <span>${i.index}</span>
+                </c:when>
+                <c:otherwise>
+                    <c:url value="/list/${i.index}" var="url">
+                        <c:param name="page" value="${i.index}"/>
+                    </c:url>
+                    <a href='<c:out value="${url}" />'>${i.index}</a>
+                </c:otherwise>
+            </c:choose>
+        </c:forEach>
+
+        <c:url value="/list/${page+1}" var="next">
+            <c:param name="page" value="${page + 1}"/>
+        </c:url>
+        <c:if test="${page + 1 <= maxPages}">
+            <a href='<c:out value="${next}" />' class="pn next">Next</a>
+        </c:if>
+    </div>
 </div>
-
 </body>
 </html>

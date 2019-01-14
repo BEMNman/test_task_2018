@@ -1,4 +1,3 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt_rt" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -9,13 +8,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Комплектующие</title>
 </head>
-
+<body>
 <div>
     <a href="<c:url value='/listParts' />">Главная</a>
 </div>
-
-<div align="center">
-    <h1>Новый товар</h1>
+<div>
+    <h1>Новые комплектующие</h1>
     <form:form action="createPart" method="post" modelAttribute="partAdd">
         <table>
             <tr>
@@ -39,10 +37,12 @@
     </form:form>
     <c:if test="${isExistPart == true}">
         <h1>
-            Добавить невозможно! Такое наименование комплектующего уже есть на складе.
+            Добавить невозможно!
+        </h1>
+        <h1>
+            Такое наименование комплектующего уже есть на складе.
         </h1>
     </c:if>
 </div>
-
 </body>
 </html>

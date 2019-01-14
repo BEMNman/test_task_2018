@@ -1,4 +1,3 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt_rt" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -13,8 +12,7 @@
 <div>
     <a href="<c:url value='/listParts' />">Главная</a>
 </div>
-
-<div align="center">
+<div>
     <h1>Редактирование позиции товара</h1>
     <c:url var="updatePart" value="/updatePart"/>
     <form:form id="updatePart" method="POST" modelAttribute="editPart" action="${updatePart}">

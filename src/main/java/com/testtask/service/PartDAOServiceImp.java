@@ -39,11 +39,6 @@ public class PartDAOServiceImp implements PartDAOService {
     }
 
     @Override
-    public List<Part> findAllPartsIsNeeded(boolean isNeeded) {
-        return partDAO.findAllPartsIsNeeded(isNeeded);
-    }
-
-    @Override
     public List<Part> listParts(){
         return partDAO.listParts();
     }
@@ -51,11 +46,6 @@ public class PartDAOServiceImp implements PartDAOService {
     @Override
     public int countComputer() {
         return partDAO.countComputer();
-    }
-
-    @Override
-    public List<Part> getPartsByName() {
-        return partDAO.getPartsByName();
     }
 
     @Override

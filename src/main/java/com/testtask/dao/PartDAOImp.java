@@ -87,24 +87,8 @@ public class PartDAOImp implements PartDAO {
 
     @Override
     @Transactional
-    public List<Part> findAllPartsIsNeeded(boolean isNeeded) {
-        List<Part> parts = new ArrayList<>();
-        Session session = this.sessionFactory.getCurrentSession();
-        Query query = session.createQuery("select p from Part p where p.isNeeded like " + isNeeded + "");
-        parts.addAll(query.getResultList());
-        return parts;
-    }
-
-    @Override
-    @Transactional
     public int countComputer() {
         return countComputer;
-    }
-
-    @Override
-    @Transactional
-    public List<Part> getPartsByName() {
-        return partsByName;
     }
 
     @Override
